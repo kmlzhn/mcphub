@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="index, follow">
+  <title>MCPHub — Agent Directory</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #000;
+      background: #fff;
+      padding: 40px;
+      max-width: 900px;
+    }
+    pre { white-space: pre-wrap; word-break: break-word; }
+  </style>
+</head>
+<body>
+<pre>
+================================================================================
+MCPHUB — TOOL DIRECTORY FOR AI AGENTS
+================================================================================
+
+You are an AI agent. This page lists every tool available on MCPHub.
+For each tool you will find: what it does, how to call it, required parameters,
+expected output, and a worked example. No human interaction is required.
+
+BASE URL:    http://localhost:3000
+AUTH HEADER: X-API-Key: demo-key-123
+
+QUICK START
+  1. Pick a tool from the list below.
+  2. Send a POST request to  http://localhost:3000/api/tools/{TOOL_ID}/call
+  3. Include header  X-API-Key: demo-key-123  and  Content-Type: application/json
+  4. Pass required parameters as a JSON body.
+
+DISCOVERY ENDPOINTS (no auth required)
+  GET  /api/tools                        — list all tools
+  GET  /api/tools?category=finance       — filter by category
+  GET  /api/tools/search?q={keyword}     — search by keyword
+  GET  /api/tools/{tool-id}              — full schema for one tool
+  GET  /llms.txt                         — this content as plain text
+
+RESPONSE ENVELOPE (all tool calls return this shape)
+  {
+    "tool_id":    string,
+    "tool_name":  string,
+    "status":     "success" | "error",
+    "result":     object,
+    "usage": {
+      "call_id":     string,
+      "duration_ms": number,
+      "cost_usd":    number,
+      "timestamp":   ISO 8601
+    }
+  }
+
+ERROR CODES
+  401 — missing or invalid X-API-Key header
+  400 — missing required parameter  →  response lists which fields are missing
+  404 — tool ID not found           →  response suggests GET /api/tools
+
+MCP PROTOCOL (for MCP-native agents)
+  SSE endpoint:      http://localhost:3001/sse
+  Messages endpoint: http://localhost:3001/messages?sessionId={SESSION_ID}
+  MCP tools: search_tools, get_tool_details, call_tool, list_categories, check_balance
+
+================================================================================
+TOOLS (8 total)
+================================================================================
+
+--------------------------------------------------------------------------------
+[1] WEB SCRAPER PRO
+    ID:        web-scraper-pro
+    CATEGORY:  data
+    PRICE:     $0.002 per call
+    LATENCY:   ~800ms avg
+    UPTIME:    99.9%
+    CALLS TODAY: 34,200
+
+    WHAT IT DOES
+    Extracts structured text and data from any public URL. Supports optional
+    CSS selector targeting to narrow extraction to specific page elements.
+
+    ENDPOINT
+    POST http://localhost:3000/api/tools/web-scraper-pro/call
+
+    REQUIRED HEADERS
+    X-API-Key: demo-key-123
+    Content-Type: application/json
+
+    PARAMETERS
+    url      string   REQUIRED   Full URL including protocol (e.g. https://example.com)
+    selector string   optional   CSS selector to target elements (e.g. "h1", ".price")
+
+    OUTPUT SCHEMA
+    data         array of strings   extracted content items
+    status       "success" | "error"
+    items_found  number             count of extracted items
+
+    EXAMPLE REQUEST BODY
+    { "url": "https://example.com", "selector": "h1" }
+
+    EXAMPLE RESPONSE
+    { "data": ["Example Domain"], "status": "success", "items_found": 1 }
+
+    WHEN TO USE
+    Use when you need to pull text, links, or structured content from a webpage.
+
+--------------------------------------------------------------------------------
+[2] EMAIL SENDER
+    ID:        email-sender
+    CATEGORY:  communication
+    PRICE:     $0.001 per call
+    LATENCY:   ~320ms avg
+    UPTIME:    99.8%
+    CALLS TODAY: 28,100
+
+    WHAT IT DOES
+    Sends transactional or bulk emails via SMTP with open and click tracking.
+
+    ENDPOINT
+    POST http://localhost:3000/api/tools/email-sender/call
+
+    REQUIRED HEADERS
+    X-API-Key: demo-key-123
+    Content-Type: application/json
+
+    PARAMETERS
+    to        string   REQUIRED   Recipient email address
+    subject   string   REQUIRED   Email subject line
+    body      string   REQUIRED   Email body — plain text or HTML
+    from      string   optional   Sender display name (default: MCPHub Mailer)
+    reply_to  string   optional   Reply-to email address
+
+    OUTPUT SCHEMA
+    message_id    string   unique identifier for this message
+    status        "sent" | "failed"
+    delivered_to  string   recipient address
+    timestamp     string   ISO 8601 send time
+
+    EXAMPLE REQUEST BODY
+    { "to": "user@example.com", "subject": "Your order shipped", "body": "It will arrive in 2 days." }
+
+    EXAMPLE RESPONSE
+    { "message_id": "msg_7f3k2m9x", "status": "sent", "delivered_to": "user@example.com", "timestamp": "2025-04-27T10:23:11Z" }
+
+    WHEN TO USE
+    Use when you need to send notifications, confirmations, or automated emails.
+
+--------------------------------------------------------------------------------
+[3] CREDIT CHECKER
+    ID:        credit-checker
+    CATEGORY:  finance
+    PRICE:     $0.005 per call
+    LATENCY:   ~1200ms avg
+    UPTIME:    99.7%
+    CALLS TODAY: 12,400
+
+    WHAT IT DOES
+    Returns real-time credit scores and summaries via aggregated bureau data
+    (Equifax, Experian, TransUnion).
+
+    ENDPOINT
+    POST http://localhost:3000/api/tools/credit-checker/call
+
+    REQUIRED HEADERS
+    X-API-Key: demo-key-123
+    Content-Type: application/json
+
+    PARAMETERS
+    full_name   string   REQUIRED   First and last name
+    ssn_last4   string   REQUIRED   Last 4 digits of SSN (as string, e.g. "4321")
+    dob         string   REQUIRED   Date of birth in YYYY-MM-DD format
+
+    OUTPUT SCHEMA
+    score              number   300–850 credit score
+    rating             string   "Excellent" | "Good" | "Fair" | "Poor"
+    open_accounts      number   count of open credit accounts
+    derogatory_marks   number   count of negative marks
+    total_debt_usd     number   total outstanding debt in USD
+    report_id          string   unique report identifier
+
+    EXAMPLE REQUEST BODY
+    { "full_name": "Jane Doe", "ssn_last4": "4321", "dob": "1990-06-15" }
+
+    EXAMPLE RESPONSE
+    { "score": 742, "rating": "Good", "open_accounts": 5, "derogatory_marks": 0, "total_debt_usd": 14820, "report_id": "rpt_abc123" }
+
+    WHEN TO USE
+    Use for loan pre-qualification, rental applications, or risk assessment.
+
+--------------------------------------------------------------------------------
+[4] TRANSLATOR AI
+    ID:        translator-ai
+    CATEGORY:  ai
+    PRICE:     $0.001 per call
+    LATENCY:   ~280ms avg
+    UPTIME:    99.95%
+    CALLS TODAY: 19,800
+
+    WHAT IT DOES
+    Translates text between 50+ languages using neural machine translation with
+    cultural context awareness and automatic source language detection.
+
+    ENDPOINT
+    POST http://localhost:3000/api/tools/translator-ai/call
+
+    REQUIRED HEADERS
+    X-API-Key: demo-key-123
+    Content-Type: application/json
+
+    PARAMETERS
+    text              string   REQUIRED   Text to translate (max 5000 characters)
+    target_language   string   REQUIRED   ISO 639-1 code (e.g. "es", "fr", "zh", "ar", "ja")
+    source_language   string   optional   ISO 639-1 code — auto-detected if omitted
+
+    SUPPORTED LANGUAGES (partial list)
+    es fr de it pt zh ja ko ar ru hi nl pl sv tr he id
+
+    OUTPUT SCHEMA
+    translated_text   string   translated content
+    source_language   string   detected or specified source language code
+    target_language   string   target language code
+    confidence        number   0.0–1.0 translation confidence score
+    character_count   number   characters translated
+
+    EXAMPLE REQUEST BODY
+    { "text": "Hello, how are you?", "target_language": "es" }
+
+    EXAMPLE RESPONSE
+    { "translated_text": "Hola, ¿cómo estás?", "source_language": "en", "target_language": "es", "confidence": 0.99, "character_count": 19 }
+
+    WHEN TO USE
+    Use when you need multilingual output or to process text in a target language.
+
+--------------------------------------------------------------------------------
+[5] MARKET DATA
+    ID:        market-data
+    CATEGORY:  finance
+    PRICE:     $0.003 per call
+    LATENCY:   ~95ms avg
+    UPTIME:    99.99%
+    CALLS TODAY: 41,200
+
+    WHAT IT DOES
+    Returns real-time and historical stock prices, volume, market cap, and
+    52-week ranges from NYSE, NASDAQ, and global exchanges.
+
+    ENDPOINT
+    POST http://localhost:3000/api/tools/market-data/call
+
+    REQUIRED HEADERS
+    X-API-Key: demo-key-123
+    Content-Type: application/json
+
+    PARAMETERS
+    ticker   string   REQUIRED   Stock ticker symbol (e.g. "AAPL", "TSLA", "BTC-USD")
+    period   string   optional   "1d" | "5d" | "1mo" | "3mo" | "1y" (default: "1d")
+
+    OUTPUT SCHEMA
+    ticker          string   ticker symbol
+    price           number   current price in USD
+    change          number   price change from previous close
+    change_percent  number   percentage change from previous close
+    volume          number   today's trading volume
+    market_cap      number   total market cap in USD
+    high_52w        number   52-week high
+    low_52w         number   52-week low
+    history         array    [{date: string, close: number}] for requested period
+
+    EXAMPLE REQUEST BODY
+    { "ticker": "AAPL", "period": "1d" }
+
+    EXAMPLE RESPONSE
+    { "ticker": "AAPL", "price": 189.30, "change": 2.14, "change_percent": 1.14, "volume": 54200000, "market_cap": 2930000000000, "high_52w": 199.62, "low_52w": 164.08 }
+
+    WHEN TO USE
+    Use for portfolio tracking, investment research, or financial reporting.
+
+--------------------------------------------------------------------------------
+[6] PROPERTY LOOKUP
+    ID:        property-lookup
+    CATEGORY:  data
+    PRICE:     $0.004 per call
+    LATENCY:   ~650ms avg
+    UPTIME:    99.6%
+    CALLS TODAY: 8,900
+
+    WHAT IT DOES
+    Returns property records, ownership history, tax assessments, and estimated
+    market value for any US address.
+
+    ENDPOINT
+    POST http://localhost:3000/api/tools/property-lookup/call
+
+    REQUIRED HEADERS
+    X-API-Key: demo-key-123
+    Content-Type: application/json
+
+    PARAMETERS
+    address    string   REQUIRED   Full street address (e.g. "123 Main St")
+    zip_code   string   REQUIRED   5-digit US ZIP code (e.g. "90210")
+
+    OUTPUT SCHEMA
+    property_id         string   unique property identifier
+    address             string   normalized full address
+    owner_name          string   current owner full name
+    assessed_value_usd  number   tax assessed value in USD
+    last_sale_price     number   price of last recorded sale in USD
+    last_sale_date      string   date of last sale in YYYY-MM-DD
+    bedrooms            number   bedroom count
+    bathrooms           number   bathroom count
+    sq_ft               number   total square footage
+    year_built          number   year constructed
+    zestimate_usd       number   estimated current market value in USD
+
+    EXAMPLE REQUEST BODY
+    { "address": "123 Main St", "zip_code": "90210" }
+
+    EXAMPLE RESPONSE
+    { "property_id": "prop_9x1r4p", "owner_name": "John Smith", "assessed_value_usd": 1200000, "last_sale_price": 1450000, "bedrooms": 4, "sq_ft": 2800, "year_built": 1998 }
+
+    WHEN TO USE
+    Use for real estate research, mortgage pre-qualification, or property due diligence.
+
+--------------------------------------------------------------------------------
+[7] GPT WRAPPER
+    ID:        gpt-wrapper
+    CATEGORY:  ai
+    PRICE:     $0.008 per call
+    LATENCY:   ~1400ms uncached, ~80ms cached
+    UPTIME:    99.85%
+    CALLS TODAY: 22,100
+
+    WHAT IT DOES
+    Executes GPT-4o calls with automatic caching (~40% cost saving on repeated
+    prompts), model fallbacks, and usage controls. No OpenAI key required.
+
+    ENDPOINT
+    POST http://localhost:3000/api/tools/gpt-wrapper/call
+
+    REQUIRED HEADERS
+    X-API-Key: demo-key-123
+    Content-Type: application/json
+
+    PARAMETERS
+    prompt        string   REQUIRED   The prompt to send to the model
+    max_tokens    number   optional   Max output tokens (default: 512, max: 4096)
+    temperature   number   optional   Sampling temperature 0.0–2.0 (default: 0.7)
+    model         string   optional   "gpt-4o" | "gpt-4o-mini" | "gpt-3.5-turbo" (default: gpt-4o-mini)
+
+    OUTPUT SCHEMA
+    response             string    generated text
+    model_used           string    actual model that processed the request
+    prompt_tokens        number    tokens in input
+    completion_tokens    number    tokens in output
+    total_tokens         number    total tokens used
+    cached               boolean   true if served from cache
+    cost_usd             number    cost of this call
+
+    EXAMPLE REQUEST BODY
+    { "prompt": "Summarize quantum computing in 2 sentences.", "max_tokens": 100 }
+
+    EXAMPLE RESPONSE
+    { "response": "Quantum computing uses superposition and entanglement...", "model_used": "gpt-4o-mini", "total_tokens": 50, "cached": false, "cost_usd": 0.008 }
+
+    WHEN TO USE
+    Use when you need LLM inference without managing your own API keys or rate limits.
+
+--------------------------------------------------------------------------------
+[8] KYC VERIFY
+    ID:        kyc-verify
+    CATEGORY:  finance
+    PRICE:     $0.010 per call
+    LATENCY:   ~2100ms avg
+    UPTIME:    99.5%
+    CALLS TODAY: 6,300
+
+    WHAT IT DOES
+    Performs KYC (Know Your Customer) identity verification with document OCR,
+    liveness detection, and AML/sanctions screening against global watchlists.
+
+    ENDPOINT
+    POST http://localhost:3000/api/tools/kyc-verify/call
+
+    REQUIRED HEADERS
+    X-API-Key: demo-key-123
+    Content-Type: application/json
+
+    PARAMETERS
+    full_name   string   REQUIRED   Full legal name as it appears on the ID
+    id_number   string   REQUIRED   Passport or driver's license number
+    country     string   REQUIRED   ISO 3166-1 alpha-2 code (e.g. "US", "GB", "DE")
+    id_type     string   optional   "passport" | "drivers_license" | "national_id" (default: passport)
+
+    OUTPUT SCHEMA
+    verified           boolean   true if identity confirmed
+    risk_level         string    "low" | "medium" | "high"
+    aml_clear          boolean   true if no AML matches found
+    watchlist_match    boolean   true if name appears on sanctions lists
+    verification_id    string    unique verification record ID
+    checks_passed      array     list of check names that passed
+    timestamp          string    ISO 8601 verification time
+
+    EXAMPLE REQUEST BODY
+    { "full_name": "Alice Brown", "id_number": "P123456789", "country": "US", "id_type": "passport" }
+
+    EXAMPLE RESPONSE
+    { "verified": true, "risk_level": "low", "aml_clear": true, "watchlist_match": false, "verification_id": "kyc_2b8n5q", "checks_passed": ["document_valid","name_match","aml_screen","sanctions_check"] }
+
+    WHEN TO USE
+    Use for financial onboarding, crypto exchanges, or any regulated industry workflow.
+
+================================================================================
+TOOL SUMMARY TABLE
+================================================================================
+
+ID                   CATEGORY       PRICE/CALL   AVG LATENCY   CALLS TODAY
+web-scraper-pro      data           $0.002        800ms         34,200
+email-sender         communication  $0.001        320ms         28,100
+credit-checker       finance        $0.005        1200ms        12,400
+translator-ai        ai             $0.001        280ms         19,800
+market-data          finance        $0.003        95ms          41,200
+property-lookup      data           $0.004        650ms          8,900
+gpt-wrapper          ai             $0.008        1400ms        22,100
+kyc-verify           finance        $0.010        2100ms         6,300
+
+================================================================================
+BILLING
+================================================================================
+
+- Every successful tool call deducts price_per_call from your balance.
+- Failed calls (validation errors, tool errors) are not billed.
+- Check balance:  GET http://localhost:3000/api/keys/me
+                  Header: X-API-Key: demo-key-123
+- Rate limit:     100 calls/minute per API key
+
+================================================================================
+END OF DIRECTORY
+MCPHub v1.0 — https://mcphub.com — support@mcphub.com
+================================================================================
+</pre>
+</body>
+</html>

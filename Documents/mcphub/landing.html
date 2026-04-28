@@ -3,364 +3,273 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MCPHub — Publish Tools. Get Paid by Agents.</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<title>MCPHub — The App Store for AI Agents</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg:     #fff;
-    --text:   #000;
-    --dim:    #888;
-    --dim2:   #ccc;
-    --border: #e5e5e5;
-  }
 
   html { scroll-behavior: smooth; }
 
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
+    background: #fff;
+    color: #000;
+    font-family: monospace;
     font-size: 14px;
-    line-height: 1.7;
+    line-height: 1.75;
     max-width: 720px;
     margin: 0 auto;
-    padding: 0 24px 80px;
+    padding: 48px 32px 96px;
   }
 
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: #000; }
-  ::-webkit-scrollbar-thumb { background: #ccc; }
+  /* ── LINKS ── */
+  a { color: #000; text-decoration: none; }
+  a:hover { text-decoration: underline; }
 
   /* ── NAV ── */
   nav {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
-    padding: 32px 0 32px;
-    border-bottom: 1px solid var(--border);
+    padding-bottom: 24px;
+    border-bottom: 1px solid #000;
     margin-bottom: 64px;
   }
-  .logo {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text);
-    text-decoration: none;
-    letter-spacing: -0.3px;
-  }
-  .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 28px;
-  }
-  .nav-right a {
-    color: var(--dim);
-    text-decoration: none;
-    font-size: 13px;
-    transition: color 0.15s;
-  }
-  .nav-right a:hover { color: var(--text); }
-  .nav-cta {
-    color: var(--text) !important;
-    border: 1px solid var(--border);
-    padding: 6px 14px;
-    transition: border-color 0.15s !important;
-  }
-  .nav-cta:hover { border-color: #555 !important; }
+  .logo { font-weight: 500; font-size: 14px; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { font-size: 13px; color: #666; }
+  .nav-links a:hover { color: #000; text-decoration: none; }
 
-  /* ── SECTIONS ── */
-  section { margin-bottom: 72px; }
-
-  .section-label {
-    font-size: 11px;
-    color: var(--dim);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-
-  h1 {
-    font-size: 32px;
-    font-weight: 500;
-    letter-spacing: -1px;
-    line-height: 1.15;
-    margin-bottom: 20px;
-  }
-
-  h2 {
-    font-size: 18px;
-    font-weight: 500;
-    letter-spacing: -0.4px;
-    margin-bottom: 16px;
-  }
-
-  p {
-    color: var(--dim);
-    margin-bottom: 12px;
-    line-height: 1.75;
-  }
-
-  p:last-child { margin-bottom: 0; }
-
+  /* ── DIVIDER ── */
   hr {
     border: none;
-    border-top: 1px solid var(--border);
-    margin: 64px 0;
+    border-top: 1px solid #e0e0e0;
+    margin: 56px 0;
+  }
+
+  /* ── SECTION LABEL ── */
+  .label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 20px;
   }
 
   /* ── HERO ── */
-  .hero-sub {
+  .hero-title {
+    font-size: 36px;
+    font-weight: 500;
+    letter-spacing: -1.2px;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+  .hero-title em {
+    font-style: italic;
+    font-weight: 300;
+    color: #666;
+  }
+  .hero-body {
     font-size: 15px;
-    color: var(--dim);
+    color: #555;
+    line-height: 1.85;
+    max-width: 560px;
     margin-bottom: 32px;
-    max-width: 580px;
-    line-height: 1.75;
   }
-
-  .hero-meta {
+  .hero-links {
     display: flex;
-    align-items: center;
-    gap: 24px;
+    align-items: baseline;
+    gap: 32px;
     flex-wrap: wrap;
-    margin-bottom: 48px;
+    margin-bottom: 20px;
   }
-  .hero-meta a {
-    color: var(--text);
-    text-decoration: none;
-    font-size: 13px;
-    border-bottom: 1px solid var(--dim2);
-    padding-bottom: 1px;
-    transition: border-color 0.15s;
-  }
-  .hero-meta a:hover { border-color: var(--text); }
-  .hero-meta span { color: var(--dim); font-size: 13px; }
-
-  /* ── STATS ── */
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    border: 1px solid var(--border);
-    margin-bottom: 0;
-  }
-  .stat {
-    padding: 20px 18px;
-    border-right: 1px solid var(--border);
-  }
-  .stat:last-child { border-right: none; }
-  .stat-num {
-    font-size: 22px;
-    font-weight: 500;
-    color: var(--text);
-    display: block;
-    letter-spacing: -0.5px;
-  }
-  .stat-label {
-    font-size: 11px;
-    color: var(--dim);
-    display: block;
-    margin-top: 3px;
-    letter-spacing: 0.04em;
-  }
-
-  /* ── PLAIN TEXT BLOCKS ── */
-  .text-block {
-    border-left: 1px solid var(--border);
-    padding-left: 20px;
-    margin-bottom: 28px;
-  }
-  .text-block h3 {
+  .hero-links a {
     font-size: 14px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 6px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 1px;
   }
-  .text-block p {
-    font-size: 13px;
-    color: var(--dim);
-    margin: 0;
-  }
+  .hero-links a:hover { text-decoration: none; border-bottom-color: #999; }
+  .hero-note { font-size: 12px; color: #999; }
 
-  /* ── NUMBERED LIST ── */
-  .numbered {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    border-top: 1px solid var(--border);
-  }
-  .numbered-item {
+  /* ── STEPS ── */
+  .steps { margin-top: 32px; }
+  .step {
     display: grid;
-    grid-template-columns: 32px 1fr;
+    grid-template-columns: 28px 1fr;
     gap: 16px;
     padding: 22px 0;
-    border-bottom: 1px solid var(--border);
-    align-items: start;
+    border-top: 1px solid #e0e0e0;
   }
-  .n-num { color: var(--dim); font-size: 13px; }
-  .n-title { font-size: 14px; font-weight: 500; margin-bottom: 5px; }
-  .n-desc { font-size: 13px; color: var(--dim); line-height: 1.65; }
+  .step:last-child { border-bottom: 1px solid #e0e0e0; }
+  .step-n { font-size: 12px; color: #bbb; padding-top: 1px; }
+  .step-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+  .step-desc { font-size: 13px; color: #666; line-height: 1.75; }
 
-  /* ── HANDLED TABLE ── */
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid var(--border);
-  }
-  .table tr { border-bottom: 1px solid var(--border); }
-  .table tr:last-child { border-bottom: none; }
-  .table td {
-    padding: 14px 16px;
+  /* ── HANDLE LIST ── */
+  .handle-list { margin-top: 32px; }
+  .handle-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 16px;
+    padding: 16px 0;
+    border-top: 1px solid #e0e0e0;
     font-size: 13px;
-    vertical-align: top;
   }
-  .table td:first-child {
-    color: var(--dim);
-    width: 200px;
-    border-right: 1px solid var(--border);
-    white-space: nowrap;
-  }
-  .table td:last-child { color: var(--text); }
+  .handle-item:last-child { border-bottom: 1px solid #e0e0e0; }
+  .handle-key { color: #999; }
+  .handle-val { color: #333; line-height: 1.7; }
 
   /* ── WHO ── */
-  .who-row {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    border-top: 1px solid var(--border);
-  }
+  .who-list { margin-top: 32px; }
   .who-item {
-    padding: 20px 0;
-    border-bottom: 1px solid var(--border);
+    padding: 22px 0;
+    border-top: 1px solid #e0e0e0;
   }
-  .who-type { font-size: 12px; color: var(--dim); margin-bottom: 6px; letter-spacing: 0.08em; text-transform: uppercase; }
-  .who-desc { font-size: 13px; color: var(--dim); line-height: 1.65; }
+  .who-item:last-child { border-bottom: 1px solid #e0e0e0; }
+  .who-type { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #bbb; margin-bottom: 8px; }
+  .who-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+  .who-desc { font-size: 13px; color: #666; line-height: 1.75; }
 
   /* ── CALCULATOR ── */
-  .calc-block {
-    border: 1px solid var(--border);
-    padding: 28px;
-  }
+  .calc { margin-top: 32px; }
   .calc-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 16px;
-    margin-bottom: 18px;
-    flex-wrap: wrap;
+    padding: 14px 0;
+    border-top: 1px solid #e0e0e0;
   }
-  .calc-row:last-of-type { margin-bottom: 0; }
-  .calc-label { font-size: 13px; color: var(--dim); min-width: 140px; }
-
+  .calc-row:last-of-type { border-bottom: 1px solid #e0e0e0; }
+  .calc-label { font-size: 13px; color: #666; min-width: 140px; }
   input[type=range] {
     flex: 1;
     appearance: none;
     -webkit-appearance: none;
     height: 1px;
-    background: var(--dim2);
+    background: #ccc;
     outline: none;
     cursor: pointer;
-    min-width: 160px;
   }
   input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 12px; height: 12px;
+    width: 11px; height: 11px;
     border-radius: 50%;
-    background: var(--text);
+    background: #000;
     cursor: pointer;
   }
-  .calc-val { font-size: 13px; color: var(--text); min-width: 70px; text-align: right; }
-
-  .calc-result {
+  .calc-val { font-size: 13px; min-width: 68px; text-align: right; }
+  .calc-results {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0;
-    border-top: 1px solid var(--border);
-    margin-top: 24px;
-    padding-top: 24px;
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px solid #e0e0e0;
   }
-  .cr { text-align: center; border-right: 1px solid var(--border); }
-  .cr:last-child { border-right: none; }
-  .cr-label { font-size: 11px; color: var(--dim); display: block; margin-bottom: 8px; letter-spacing: 0.06em; text-transform: uppercase; }
-  .cr-val { font-size: 22px; font-weight: 500; display: block; letter-spacing: -0.5px; }
+  .cr { padding-right: 24px; }
+  .cr:last-child { padding-right: 0; }
+  .cr-label { font-size: 11px; color: #999; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .cr-val { font-size: 26px; font-weight: 500; letter-spacing: -0.8px; }
+  .calc-note { margin-top: 28px; font-size: 12px; color: #bbb; }
 
   /* ── FAQ ── */
-  .faq { border-top: 1px solid var(--border); }
-  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq { margin-top: 32px; border-top: 1px solid #e0e0e0; }
+  .faq-item { border-bottom: 1px solid #e0e0e0; }
   .faq-q {
-    width: 100%; padding: 18px 0;
-    display: flex; align-items: center; justify-content: space-between;
-    background: transparent; border: none;
-    color: var(--text); font-family: 'DM Mono', monospace;
-    font-size: 14px; cursor: pointer; text-align: left; gap: 20px;
+    width: 100%;
+    padding: 18px 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    background: transparent;
+    border: none;
+    color: #000;
+    font-family: monospace;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: left;
+    gap: 20px;
   }
-  .faq-q:hover { color: var(--text); }
-  .faq-arrow { color: var(--dim); font-size: 16px; flex-shrink: 0; transition: transform 0.2s; }
-  .faq-item.open .faq-arrow { transform: rotate(45deg); color: var(--text); }
+  .faq-arrow { color: #bbb; font-size: 16px; flex-shrink: 0; transition: transform 0.2s; }
+  .faq-item.open .faq-arrow { transform: rotate(45deg); color: #000; }
   .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-  .faq-item.open .faq-a { max-height: 300px; }
-  .faq-a-inner { padding: 0 0 18px; color: var(--dim); font-size: 13px; line-height: 1.75; }
-  .faq-a-inner a { color: var(--text); }
+  .faq-item.open .faq-a { max-height: 320px; }
+  .faq-a-inner { padding: 0 0 18px; font-size: 13px; color: #555; line-height: 1.8; max-width: 580px; }
 
   /* ── FORM ── */
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form { margin-top: 32px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 7px; }
   .form-group.full { grid-column: 1 / -1; }
-  .form-group label { font-size: 11px; color: var(--dim); letter-spacing: 0.08em; text-transform: uppercase; }
+  .form-group label { font-size: 11px; color: #999; letter-spacing: 0.1em; text-transform: uppercase; }
   .form-group input,
   .form-group select,
   .form-group textarea {
-    background: transparent;
-    border: 1px solid var(--border);
-    padding: 10px 12px;
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
+    background: #fff;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    padding: 8px 0;
+    color: #000;
+    font-family: monospace;
     font-size: 13px;
     outline: none;
     transition: border-color 0.15s;
     -webkit-appearance: none;
+    border-radius: 0;
   }
   .form-group textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
-  .form-group select { cursor: pointer; }
-  .form-group select option { background: #fff; color: #000; }
   .form-group input::placeholder,
-  .form-group textarea::placeholder { color: var(--dim2); }
+  .form-group textarea::placeholder { color: #ccc; }
   .form-group input:focus,
   .form-group select:focus,
-  .form-group textarea:focus { border-color: #555; }
+  .form-group textarea:focus { border-bottom-color: #000; }
+  .form-group select { cursor: pointer; }
+  .form-group select option { background: #fff; color: #000; }
 
-  .submit-btn {
-    margin-top: 16px;
-    padding: 12px 24px;
-    background: #000;
-    border: none;
-    color: #fff;
-    font-family: 'DM Mono', monospace;
+  .form-submit {
+    margin-top: 28px;
+    font-family: monospace;
     font-size: 14px;
-    font-weight: 500;
+    color: #000;
+    background: none;
+    border: none;
     cursor: pointer;
-    transition: opacity 0.15s;
-    width: 100%;
+    padding: 0;
+    border-bottom: 1px solid #000;
+    padding-bottom: 2px;
+    transition: color 0.15s, border-color 0.15s;
   }
-  .submit-btn:hover { opacity: 0.85; }
-  .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .form-submit:hover { color: #555; border-color: #555; }
+  .form-submit:disabled { color: #bbb; border-color: #bbb; cursor: not-allowed; }
 
-  /* success */
-  .apply-success { display: none; padding: 32px 0; }
-  .apply-success p { color: var(--dim); font-size: 13px; }
-  .apply-success strong { color: var(--text); }
+  .apply-success { display: none; padding: 16px 0; }
+  .apply-success p { font-size: 13px; color: #555; line-height: 1.75; }
+  .apply-success strong { color: #000; }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid #000;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12px;
+    color: #999;
+  }
+  footer a { color: #999; }
+  footer a:hover { color: #000; text-decoration: none; }
+  .footer-links { display: flex; gap: 20px; }
 
   /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    .stats { grid-template-columns: 1fr 1fr; }
-    .stat { border-bottom: 1px solid var(--border); }
-    .nav-right { gap: 14px; }
+  @media (max-width: 560px) {
+    body { padding: 32px 20px 64px; }
+    .hero-title { font-size: 26px; }
+    .handle-item { grid-template-columns: 1fr; gap: 4px; }
+    .handle-key { color: #bbb; }
     .form-grid { grid-template-columns: 1fr; }
-    .calc-result { grid-template-columns: 1fr; }
-    .cr { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 16px; }
-    .cr:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+    .calc-results { grid-template-columns: 1fr; gap: 20px; }
+    .nav-links { gap: 16px; }
+    footer { flex-direction: column; }
   }
 </style>
 </head>
@@ -368,75 +277,65 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="logo">✦ MCPHub</a>
-  <div class="nav-right">
+  <span class="logo">MCPHub</span>
+  <div class="nav-links">
     <a href="#how">How it works</a>
     <a href="#faq">FAQ</a>
-    <a href="#apply" class="nav-cta">Apply to publish</a>
+    <a href="#apply">Apply →</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="section-label">mcphub.com — publisher guide</div>
-  <h1>Publish tools.<br/>Get paid by AI agents.</h1>
-  <p class="hero-sub">MCPHub is the marketplace where AI agents discover and call developer-built tools. You build the capability. We handle auth, billing, docs, and payouts. Agents find it and pay per call.</p>
-  <div class="hero-meta">
-    <a href="#apply">Apply to publish →</a>
+  <div class="label">mcphub — for developers &amp; companies</div>
+  <h1 class="hero-title">The app store<br/><em>for AI agents.</em></h1>
+  <p class="hero-body">
+    MCPHub is a marketplace where AI agents discover, connect to, and pay for tools.
+    You submit what your product does — we convert it to machine-readable format and list it.
+    Agents find it, read the spec, and integrate autonomously. No sales calls. No human in the loop.
+  </p>
+  <div class="hero-links">
+    <a href="#apply">Apply to list your product →</a>
     <a href="#how">See how it works →</a>
-    <span>15% platform fee · 85% to you · weekly payouts</span>
   </div>
-
-  <div class="stats">
-    <div class="stat">
-      <span class="stat-num" data-target="500" data-suffix="+">0+</span>
-      <span class="stat-label">Tools published</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num" data-target="2.4" data-suffix="M" data-decimal="1">0M</span>
-      <span class="stat-label">Agent calls / day</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num" data-target="312">0</span>
-      <span class="stat-label">Developers earning</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num" data-prefix="$" data-target="84" data-suffix="K">$0K</span>
-      <span class="stat-label">Paid out / month</span>
-    </div>
-  </div>
+  <p class="hero-note">15% platform fee · 85% to you · payouts weekly</p>
 </section>
 
 <hr />
 
 <!-- HOW IT WORKS -->
 <section id="how">
-  <div class="section-label">How it works</div>
-  <h2>Three steps from idea to income.</h2>
-  <p>No DevOps, no billing code, no sales calls. Deploy once and earn passively.</p>
+  <div class="label">How it works</div>
+  <h2 style="font-size:18px;font-weight:500;letter-spacing:-0.3px;margin-bottom:10px">From submission to earning — without a single sales call.</h2>
+  <p style="font-size:13px;color:#666;max-width:520px;line-height:1.8">You tell us what your product does. We handle the conversion, the docs, the auth, and the billing. Agents do the rest.</p>
 
-  <br />
-
-  <div class="numbered">
-    <div class="numbered-item">
-      <span class="n-num">01</span>
+  <div class="steps">
+    <div class="step">
+      <span class="step-n">01</span>
       <div>
-        <div class="n-title">Build your tool</div>
-        <div class="n-desc">Wrap any capability as an MCP server — a web scraper, a credit API, a translation service, anything with an input and an output. We have SDKs for Node.js, Python, and Go. Most publishers are live within a few hours.</div>
+        <div class="step-title">You submit your product</div>
+        <div class="step-desc">Fill out the form below describing what your API or service does — its inputs, outputs, and use cases. No technical integration needed to apply.</div>
       </div>
     </div>
-    <div class="numbered-item">
-      <span class="n-num">02</span>
+    <div class="step">
+      <span class="step-n">02</span>
       <div>
-        <div class="n-title">Deploy to MCPHub</div>
-        <div class="n-desc">Run <code>mcphub deploy</code> from your terminal. We host it, version it, and generate machine-readable docs from your JSON schema. AI agents can discover and read your tool's spec without any human involvement.</div>
+        <div class="step-title">We convert it to machine-readable format</div>
+        <div class="step-desc">We take your description and produce a structured JSON schema and agent-readable documentation. Every listing on MCPHub is designed to be consumed by AI agents directly — they read the spec and know exactly how to call your tool without any human help.</div>
       </div>
     </div>
-    <div class="numbered-item">
-      <span class="n-num">03</span>
+    <div class="step">
+      <span class="step-n">03</span>
       <div>
-        <div class="n-title">Agents find it. You earn.</div>
-        <div class="n-desc">Agents browse the catalog, read your docs, and start calling your tool — no human needed. Every call is metered and billed automatically. You keep 85%. Money arrives in your account every Friday.</div>
+        <div class="step-title">Agents discover you and connect autonomously</div>
+        <div class="step-desc">AI agents browse the catalog, search for what they need, read your listing, authenticate, and start calling your API — all programmatically. No demos, no integration meetings.</div>
+      </div>
+    </div>
+    <div class="step">
+      <span class="step-n">04</span>
+      <div>
+        <div class="step-title">You get paid per call</div>
+        <div class="step-desc">Every successful call is metered and billed automatically. We collect from the agent, take our 15%, and send you 85% every week. Zero billing code on your side.</div>
       </div>
     </div>
   </div>
@@ -446,69 +345,59 @@
 
 <!-- WHAT WE HANDLE -->
 <section id="handled">
-  <div class="section-label">What we handle</div>
-  <h2>Everything you'd hate building.</h2>
-  <p>The infrastructure that sits between your tool and every AI agent in the world. Built once so you never have to.</p>
+  <div class="label">What we handle</div>
+  <h2 style="font-size:18px;font-weight:500;letter-spacing:-0.3px;margin-bottom:10px">Everything between your API and every AI agent in the world.</h2>
 
-  <br />
-
-  <table class="table">
-    <tr>
-      <td>Authentication</td>
-      <td>Every agent gets a unique API key. We validate, rotate, and revoke. You never touch auth code.</td>
-    </tr>
-    <tr>
-      <td>Rate limiting</td>
-      <td>Per-agent limits, burst protection, and graceful backoff — configurable from your dashboard.</td>
-    </tr>
-    <tr>
-      <td>Documentation</td>
-      <td>Auto-generated from your JSON schema. Agents read it in one request and know exactly how to call your tool.</td>
-    </tr>
-    <tr>
-      <td>Metering & billing</td>
-      <td>Every call is logged, priced, and billed to the calling agent's balance in real time. Zero billing code on your side.</td>
-    </tr>
-    <tr>
-      <td>Weekly payouts</td>
-      <td>Revenue collected and sent to your Stripe or bank account every Friday. No invoices, no chasing anyone.</td>
-    </tr>
-    <tr>
-      <td>Analytics</td>
-      <td>Real-time call volume, latency, error rates, revenue, and agent attribution — all in one dashboard.</td>
-    </tr>
-    <tr>
-      <td>MCP + REST access</td>
-      <td>Your tool is accessible via REST API and native MCP protocol. Works with Claude, GPT, LangChain, and any custom agent.</td>
-    </tr>
-  </table>
+  <div class="handle-list">
+    <div class="handle-item">
+      <span class="handle-key">Machine-readable listings</span>
+      <span class="handle-val">We convert your submission into a structured schema agents can parse in one request. They read it and know exactly how to call you.</span>
+    </div>
+    <div class="handle-item">
+      <span class="handle-key">Authentication</span>
+      <span class="handle-val">Every agent gets a unique API key. We validate, rotate, and revoke. You never touch auth code.</span>
+    </div>
+    <div class="handle-item">
+      <span class="handle-key">Metering &amp; billing</span>
+      <span class="handle-val">Every call is logged and billed to the calling agent's balance in real time. Zero billing code on your side.</span>
+    </div>
+    <div class="handle-item">
+      <span class="handle-key">Weekly payouts</span>
+      <span class="handle-val">Revenue collected and sent to your bank account every Friday. No invoices, no chasing anyone.</span>
+    </div>
+    <div class="handle-item">
+      <span class="handle-key">Rate limiting</span>
+      <span class="handle-val">Per-agent limits and burst protection, configurable for your tool's capacity.</span>
+    </div>
+    <div class="handle-item">
+      <span class="handle-key">MCP + REST access</span>
+      <span class="handle-val">Your tool is accessible via REST API and native MCP protocol. Works with Claude, GPT, LangChain, and any custom agent.</span>
+    </div>
+  </div>
 </section>
 
 <hr />
 
-<!-- WHO -->
+<!-- WHO IT'S FOR -->
 <section id="who">
-  <div class="section-label">Who it's for</div>
-  <h2>Built for builders of all sizes.</h2>
-  <p>If you have something useful that can be called via an API, MCPHub gives it a distribution channel that didn't exist before.</p>
+  <div class="label">Who it's for</div>
+  <h2 style="font-size:18px;font-weight:500;letter-spacing:-0.3px;margin-bottom:10px">If agents could pay for your product, would they?</h2>
 
-  <br />
-
-  <div class="who-row">
+  <div class="who-list">
     <div class="who-item">
       <div class="who-type">Indie developers</div>
-      <div class="n-title" style="margin-bottom:6px">You built something useful — ship it.</div>
-      <div class="who-desc">A scraper, a wrapper, a niche data API. Stop leaving it in a GitHub repo. Publish it and let AI agents pay to use it. No marketing, no sales calls — agents discover it programmatically.</div>
+      <div class="who-title">You built something useful — ship it.</div>
+      <div class="who-desc">A scraper, a wrapper, a niche data API. Stop leaving it in a GitHub repo. Publish it and let AI agents pay to use it. No marketing, no sales — agents discover it programmatically.</div>
     </div>
     <div class="who-item">
       <div class="who-type">Startups</div>
-      <div class="n-title" style="margin-bottom:6px">A zero-CAC distribution channel.</div>
-      <div class="who-desc">You have an API but acquiring human users is slow and expensive. MCPHub connects you to AI agents that integrate autonomously. No sales team, no demos, no enterprise contracts to close.</div>
+      <div class="who-title">A zero-CAC distribution channel.</div>
+      <div class="who-desc">You have an API but acquiring human users is slow and expensive. MCPHub connects you to AI agents that integrate autonomously. No demos, no enterprise contracts to close.</div>
     </div>
     <div class="who-item">
-      <div class="who-type">Enterprise teams</div>
-      <div class="n-title" style="margin-bottom:6px">Monetize proprietary data and APIs.</div>
-      <div class="who-desc">Proprietary data, internal APIs, compliance tools — other companies' AI agents will pay to access them. MCPHub handles commercialization end to end. Talk to us about white-label and custom contracts.</div>
+      <div class="who-type">Enterprises</div>
+      <div class="who-title">Monetize proprietary data and APIs.</div>
+      <div class="who-desc">Proprietary datasets, compliance tools, internal APIs — other companies' AI agents will pay to access them. MCPHub handles commercialization end to end.</div>
     </div>
   </div>
 </section>
@@ -517,13 +406,11 @@
 
 <!-- REVENUE CALCULATOR -->
 <section id="calc">
-  <div class="section-label">Revenue calculator</div>
-  <h2>How much could you earn?</h2>
-  <p>Adjust the sliders. See potential income before writing a single line of deployment code.</p>
+  <div class="label">Revenue calculator</div>
+  <h2 style="font-size:18px;font-weight:500;letter-spacing:-0.3px;margin-bottom:10px">How much could you earn?</h2>
+  <p style="font-size:13px;color:#666;margin-bottom:8px;line-height:1.8">Adjust the sliders to estimate potential income before writing a single line of code.</p>
 
-  <br />
-
-  <div class="calc-block">
+  <div class="calc">
     <div class="calc-row">
       <span class="calc-label">Price per call</span>
       <input type="range" id="r-price" min="1" max="20" value="3" step="1" />
@@ -534,21 +421,21 @@
       <input type="range" id="r-calls" min="100" max="100000" value="10000" step="100" />
       <span class="calc-val" id="v-calls">10,000</span>
     </div>
-    <div class="calc-result">
+    <div class="calc-results">
       <div class="cr">
-        <span class="cr-label">Daily</span>
-        <span class="cr-val" id="r-daily">$30</span>
+        <div class="cr-label">Daily gross</div>
+        <div class="cr-val" id="r-daily">$30</div>
       </div>
       <div class="cr">
-        <span class="cr-label">Monthly (your 85%)</span>
-        <span class="cr-val" id="r-monthly">$765</span>
+        <div class="cr-label">Monthly (your 85%)</div>
+        <div class="cr-val" id="r-monthly">$765</div>
       </div>
       <div class="cr">
-        <span class="cr-label">Annual (your 85%)</span>
-        <span class="cr-val" id="r-annual">$9.3K</span>
+        <div class="cr-label">Annual (your 85%)</div>
+        <div class="cr-val" id="r-annual">$9.3K</div>
       </div>
     </div>
-    <p style="font-size:11px;margin-top:20px;letter-spacing:0.04em">MCPHub takes 15% · You keep 85% · Payouts every Friday</p>
+    <p class="calc-note">MCPHub takes 15% · You keep 85% · Payouts every Friday</p>
   </div>
 </section>
 
@@ -556,35 +443,33 @@
 
 <!-- FAQ -->
 <section id="faq">
-  <div class="section-label">FAQ</div>
-  <h2>Common questions.</h2>
-
-  <br />
+  <div class="label">FAQ</div>
+  <h2 style="font-size:18px;font-weight:500;letter-spacing:-0.3px;margin-bottom:32px">Common questions.</h2>
 
   <div class="faq">
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">What exactly is an MCP tool? <span class="faq-arrow">+</span></button>
-      <div class="faq-a"><div class="faq-a-inner">MCP (Model Context Protocol) is an open standard from Anthropic that lets AI agents call external tools natively — think of it like a USB standard for AI. Any MCP-compatible agent (Claude, GPT, LangChain bots, custom agents) can connect to any MCP tool without custom integration work. If your capability has a defined input and output, it can be an MCP tool on MCPHub.</div></div>
+      <button class="faq-q" onclick="toggleFaq(this)">What is MCPHub exactly? <span class="faq-arrow">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">MCPHub is a marketplace designed for AI agents, not humans. Companies and developers list their tools or APIs. We convert those listings into machine-readable format. AI agents browse the catalog, read the specs, and connect to the tools they need — all autonomously, with no human involvement required.</div></div>
     </div>
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Do I need to rewrite my existing API? <span class="faq-arrow">+</span></button>
-      <div class="faq-a"><div class="faq-a-inner">No. If you already have a REST API, you wrap it in a thin MCP adapter — our CLI scaffolds most of this automatically. Most publishers have their tool live within a few hours of their first attempt. We have templates for Node.js, Python, and Go.</div></div>
+      <button class="faq-q" onclick="toggleFaq(this)">What is MCP? <span class="faq-arrow">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">MCP (Model Context Protocol) is an open standard from Anthropic that lets AI agents call external tools natively — think of it like a USB standard for AI. Any MCP-compatible agent (Claude, GPT, LangChain bots, custom agents) can connect to any MCP tool without custom integration work.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Do I need to change my existing API? <span class="faq-arrow">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">No. You don't need to do anything technical to apply. Just describe what your product does using the form below. If you're approved, we'll work with you on the integration. For most existing REST APIs, the setup is minimal.</div></div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">How does the 85/15 split work? <span class="faq-arrow">+</span></button>
-      <div class="faq-a"><div class="faq-a-inner">You set your price per call (minimum $0.001). MCPHub takes 15% as a platform fee. You keep 85%. Revenue is aggregated weekly and paid out every Friday via Stripe or direct bank transfer. No monthly fees, no minimums, no upfront costs — we only earn when you earn.</div></div>
+      <div class="faq-a"><div class="faq-a-inner">You set your price per call. MCPHub takes 15% as a platform fee. You keep 85%. Revenue is aggregated weekly and paid out every Friday via bank transfer. No monthly fees, no minimums, no upfront costs — we only earn when you earn.</div></div>
     </div>
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Who are the agents calling my tool? <span class="faq-arrow">+</span></button>
-      <div class="faq-a"><div class="faq-a-inner">AI agents built by companies and developers using frameworks like LangChain, CrewAI, AutoGPT, and custom Claude or GPT-4 integrations. They register for an MCPHub API key, get billed per call, and you can see agent IDs, call volumes, and revenue attribution in your dashboard.</div></div>
+      <button class="faq-q" onclick="toggleFaq(this)">Who are the agents using these tools? <span class="faq-arrow">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">AI agents built by companies and developers using frameworks like LangChain, CrewAI, AutoGPT, and custom Claude or GPT integrations. They register for an MCPHub API key, get billed per call, and you can see call volumes and revenue attribution in your dashboard.</div></div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">Is there a review process? <span class="faq-arrow">+</span></button>
-      <div class="faq-a"><div class="faq-a-inner">Yes — a brief manual review for quality, clear documentation, and compliance with publisher guidelines. No tools that violate privacy laws or scrape authenticated systems without permission. Most reviews complete within 24 hours of application.</div></div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">What if my tool has downtime? <span class="faq-arrow">+</span></button>
-      <div class="faq-a"><div class="faq-a-inner">Failed calls are not billed to agents and not paid to you — only successful calls generate revenue. We monitor uptime and surface error rates in your dashboard. If your error rate exceeds 5%, we notify you before it affects your marketplace ranking.</div></div>
+      <div class="faq-a"><div class="faq-a-inner">Yes — a brief manual review for quality, clear documentation, and compliance with our guidelines. Most reviews complete within 24–48 hours of application.</div></div>
     </div>
   </div>
 </section>
@@ -593,14 +478,12 @@
 
 <!-- APPLY -->
 <section id="apply">
-  <div class="section-label">Apply to publish</div>
-  <h2>Ready to publish your tool?</h2>
-  <p>Fill in the form below. We review every application within 24 hours and send you onboarding credentials by email.</p>
-
-  <br />
+  <div class="label">Apply to publish</div>
+  <h2 style="font-size:18px;font-weight:500;letter-spacing:-0.3px;margin-bottom:10px">List your product on MCPHub.</h2>
+  <p style="font-size:13px;color:#666;line-height:1.8;margin-bottom:8px">Tell us what your product does. We'll review it and reach out within 48 hours.</p>
 
   <div id="apply-form-wrap">
-    <form id="apply-form" onsubmit="submitForm(event)">
+    <form id="apply-form" onsubmit="submitForm(event)" class="form">
       <div class="form-grid">
         <div class="form-group">
           <label>First name</label>
@@ -616,106 +499,82 @@
         </div>
         <div class="form-group">
           <label>Company / project</label>
-          <input type="text" placeholder="Acme Inc. or personal" required />
+          <input type="text" placeholder="Acme Inc. or personal project" required />
         </div>
         <div class="form-group">
-          <label>Tool category</label>
+          <label>Product category</label>
           <select required>
-            <option value="" disabled selected>Select</option>
+            <option value="" disabled selected>Select a category</option>
             <option>Data (scraping, lookup, records)</option>
-            <option>Communication (email, SMS)</option>
+            <option>Communication (email, SMS, notifications)</option>
             <option>Finance (credit, payments, markets)</option>
             <option>AI (LLM, vision, translation)</option>
-            <option>Identity & compliance (KYC, AML)</option>
+            <option>Identity &amp; compliance (KYC, AML)</option>
+            <option>Developer tools</option>
             <option>Other</option>
           </select>
         </div>
         <div class="form-group">
-          <label>Est. price per call</label>
+          <label>Estimated price per call</label>
           <select required>
-            <option value="" disabled selected>Select</option>
+            <option value="" disabled selected>Select a range</option>
             <option>$0.001 – $0.002</option>
             <option>$0.003 – $0.005</option>
             <option>$0.005 – $0.010</option>
             <option>$0.010+</option>
+            <option>Not sure yet</option>
           </select>
         </div>
         <div class="form-group full">
-          <label>Describe your tool</label>
-          <textarea placeholder="What does it do? What inputs does it take? What does it return?" required></textarea>
+          <label>Describe your product</label>
+          <textarea placeholder="What does it do? What inputs does it take? What does it return? Who would use it?" required></textarea>
         </div>
         <div class="form-group full">
-          <label>GitHub or existing API URL (optional)</label>
+          <label>Existing API or GitHub URL (optional)</label>
           <input type="text" placeholder="https://github.com/you/your-tool" />
         </div>
       </div>
-      <button type="submit" class="submit-btn" id="submit-btn">Submit application →</button>
+      <button type="submit" class="form-submit" id="submit-btn">Submit application →</button>
     </form>
   </div>
 
   <div class="apply-success" id="apply-success">
-    <p>✓ Application received.</p>
-    <p>We'll reach out to <strong id="submitted-email">your email</strong> within 24 hours with onboarding credentials and next steps.</p>
-    <br />
-    <p>While you wait — read the <a href="http://localhost:3000/llms.txt" style="color:var(--text)">agent guide →</a></p>
+    <p>✓ Application received. We'll reach out to <strong id="submitted-email">your email</strong> within 48 hours.</p>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer style="border-top:1px solid var(--border);padding-top:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
-  <span style="color:var(--dim);font-size:12px">© 2025 MCPHub, Inc.</span>
-  <div style="display:flex;gap:24px">
-    <a href="#" style="color:var(--dim);font-size:12px;text-decoration:none">Privacy</a>
-    <a href="#" style="color:var(--dim);font-size:12px;text-decoration:none">Terms</a>
-    <a href="mailto:hello@mcphub.com" style="color:var(--dim);font-size:12px;text-decoration:none">hello@mcphub.com</a>
+<footer>
+  <span>© 2026 MCPHub, Inc.</span>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="mailto:hello@mcphub.com">hello@mcphub.com</a>
   </div>
 </footer>
 
 <script>
-// ── Counter animation ──
-function animateCounter(el) {
-  const target = parseFloat(el.dataset.target);
-  const suffix = el.dataset.suffix || '';
-  const prefix = el.dataset.prefix || '';
-  const decimal = parseInt(el.dataset.decimal) || 0;
-  const duration = 1400;
-  const start = performance.now();
-  function step(now) {
-    const t = Math.min((now - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - t, 3);
-    const cur = ease * target;
-    el.textContent = prefix + (decimal > 0 ? cur.toFixed(decimal) : Math.floor(cur)) + suffix;
-    if (t < 1) requestAnimationFrame(step);
-    else el.textContent = prefix + target + suffix;
-  }
-  requestAnimationFrame(step);
-}
-const counters = document.querySelectorAll('.stat-num[data-target]');
-let fired = false;
-new IntersectionObserver(entries => {
-  if (!fired && entries.some(e => e.isIntersecting)) {
-    fired = true; counters.forEach(animateCounter);
-  }
-}, { threshold: 0.3 }).observe(document.querySelector('.stats'));
-
 // ── Calculator ──
 const rPrice = document.getElementById('r-price');
 const rCalls = document.getElementById('r-calls');
+
 function fmt(n) {
-  if (n >= 1000000) return '$' + (n/1000000).toFixed(1) + 'M';
-  if (n >= 1000) return '$' + (n/1000).toFixed(1) + 'K';
+  if (n >= 1000000) return '$' + (n / 1000000).toFixed(1) + 'M';
+  if (n >= 1000)    return '$' + (n / 1000).toFixed(1) + 'K';
   return '$' + n.toFixed(0);
 }
+
 function updateCalc() {
   const price = rPrice.value / 1000;
   const calls = parseInt(rCalls.value);
-  const d = price * calls;
-  document.getElementById('v-price').textContent = '$' + price.toFixed(3);
-  document.getElementById('v-calls').textContent = calls.toLocaleString();
-  document.getElementById('r-daily').textContent = fmt(d);
-  document.getElementById('r-monthly').textContent = fmt(d * 30 * 0.85);
-  document.getElementById('r-annual').textContent = fmt(d * 365 * 0.85);
+  const daily = price * calls;
+  document.getElementById('v-price').textContent  = '$' + price.toFixed(3);
+  document.getElementById('v-calls').textContent  = calls.toLocaleString();
+  document.getElementById('r-daily').textContent  = fmt(daily);
+  document.getElementById('r-monthly').textContent = fmt(daily * 30 * 0.85);
+  document.getElementById('r-annual').textContent  = fmt(daily * 365 * 0.85);
 }
+
 rPrice.addEventListener('input', updateCalc);
 rCalls.addEventListener('input', updateCalc);
 updateCalc();
@@ -731,7 +590,7 @@ function toggleFaq(btn) {
 // ── Form ──
 function submitForm(e) {
   e.preventDefault();
-  const btn = document.getElementById('submit-btn');
+  const btn   = document.getElementById('submit-btn');
   const email = document.getElementById('email-field').value;
   btn.disabled = true;
   btn.textContent = 'Submitting…';
@@ -740,7 +599,7 @@ function submitForm(e) {
     const s = document.getElementById('apply-success');
     s.style.display = 'block';
     document.getElementById('submitted-email').textContent = email;
-  }, 700);
+  }, 600);
 }
 </script>
 </body>
