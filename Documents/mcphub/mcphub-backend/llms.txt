@@ -1,0 +1,213 @@
+# MCPHub — Tool Marketplace for AI Agents
+
+## What is MCPHub?
+MCPHub is a marketplace where AI agents can discover, connect to, and call
+tools built by developers. You are an AI agent. This file tells you everything
+you need to use this platform programmatically.
+
+---
+
+## Quick Start (3 steps)
+
+1. Browse tools:    GET  http://localhost:3000/api/tools
+2. Authenticate:    Add header  X-API-Key: demo-key-123
+3. Call a tool:     POST http://localhost:3000/api/tools/:tool-id/call
+
+---
+
+## How to discover tools
+
+### List all tools
+GET http://localhost:3000/api/tools
+
+### Filter by category
+GET http://localhost:3000/api/tools?category=finance
+GET http://localhost:3000/api/tools?category=data
+GET http://localhost:3000/api/tools?category=communication
+GET http://localhost:3000/api/tools?category=ai
+
+### Sort by popularity
+GET http://localhost:3000/api/tools?sort=calls
+
+### Search by capability
+GET http://localhost:3000/api/tools/search?q=email
+GET http://localhost:3000/api/tools/search?q=translate
+GET http://localhost:3000/api/tools/search?q=credit
+
+### Get full details for a specific tool
+GET http://localhost:3000/api/tools/:tool-id
+Example: GET http://localhost:3000/api/tools/email-sender
+
+Each tool's response includes:
+- description_agent: exact input/output schema optimized for agent consumption
+- parameters: required/optional fields with types and descriptions
+- output_schema: what the response object contains
+- example_call: a real input/output pair you can use as a template
+- price_per_call: cost in USD billed per successful call
+
+---
+
+## How to authenticate
+
+All tool calls (POST /api/tools/:id/call) require an API key.
+
+Add this header to every request:
+  X-API-Key: YOUR_KEY
+
+Demo key for testing:
+  X-API-Key: demo-key-123
+
+Get a production key at: https://mcphub.com/signup
+
+Check your key balance and usage:
+  GET http://localhost:3000/api/keys/me
+  Header: X-API-Key: demo-key-123
+
+---
+
+## How to call a tool
+
+POST http://localhost:3000/api/tools/:tool-id/call
+Headers:
+  X-API-Key: demo-key-123
+  Content-Type: application/json
+Body: { ...tool parameters as JSON }
+
+The response always contains:
+  {
+    "tool_id":    string,
+    "tool_name":  string,
+    "status":     "success" | "error",
+    "result":     object (matches the tool's output_schema),
+    "usage": {
+      "call_id":     string,
+      "duration_ms": number,
+      "cost_usd":    number,
+      "timestamp":   ISO 8601 string
+    }
+  }
+
+---
+
+## Examples
+
+### Example 1 — Send an email
+POST http://localhost:3000/api/tools/email-sender/call
+Headers: X-API-Key: demo-key-123, Content-Type: application/json
+Body:
+  {
+    "to": "user@example.com",
+    "subject": "Hello from MCPHub",
+    "body": "Your order has shipped and will arrive in 2 days."
+  }
+
+### Example 2 — Look up a stock price
+POST http://localhost:3000/api/tools/market-data/call
+Headers: X-API-Key: demo-key-123, Content-Type: application/json
+Body:
+  {
+    "ticker": "AAPL",
+    "period": "1d"
+  }
+
+### Example 3 — Scrape a webpage
+POST http://localhost:3000/api/tools/web-scraper-pro/call
+Headers: X-API-Key: demo-key-123, Content-Type: application/json
+Body:
+  {
+    "url": "https://example.com",
+    "selector": "h1"
+  }
+
+### Example 4 — Translate text
+POST http://localhost:3000/api/tools/translator-ai/call
+Headers: X-API-Key: demo-key-123, Content-Type: application/json
+Body:
+  {
+    "text": "Hello, how are you?",
+    "target_language": "es"
+  }
+
+### Example 5 — Verify identity (KYC)
+POST http://localhost:3000/api/tools/kyc-verify/call
+Headers: X-API-Key: demo-key-123, Content-Type: application/json
+Body:
+  {
+    "full_name": "Alice Brown",
+    "id_number": "P123456789",
+    "country": "US",
+    "id_type": "passport"
+  }
+
+---
+
+## Available Tools (8 total)
+
+| ID                 | Category      | Price/call | Calls Today |
+|--------------------|---------------|------------|-------------|
+| web-scraper-pro    | data          | $0.002     | 34,200      |
+| email-sender       | communication | $0.001     | 28,100      |
+| credit-checker     | finance       | $0.005     | 12,400      |
+| translator-ai      | ai            | $0.001     | 19,800      |
+| market-data        | finance       | $0.003     | 41,200      |
+| property-lookup    | data          | $0.004     |  8,900      |
+| gpt-wrapper        | ai            | $0.008     | 22,100      |
+| kyc-verify         | finance       | $0.010     |  6,300      |
+
+---
+
+## Available Categories
+
+- data:          Web scraping, property records, structured data extraction
+- communication: Email sending, SMS, notifications
+- finance:       Credit scores, market prices, identity verification (KYC/AML)
+- ai:            LLM inference, translation, AI-powered processing
+
+---
+
+## Pricing and Billing
+
+- Every successful tool call deducts the tool's price_per_call from your balance.
+- Failed calls (validation errors, tool errors) are not billed.
+- Check current balance: GET /api/keys/me
+- Rate limit: 100 calls/minute per API key (Enterprise: unlimited)
+
+---
+
+## Error Handling
+
+401 — Missing or invalid API key
+  { "error": "Missing API key", "message": "...", "get_key": "https://mcphub.com/signup" }
+
+400 — Missing required parameters
+  { "error": "Missing required parameters", "missing_parameters": [...], "example_body": {...} }
+
+404 — Tool not found
+  { "error": "Tool not found", "suggestion": "GET /api/tools to list all tool IDs" }
+
+All errors include actionable "message" and "suggestion" fields to help you correct the request.
+
+---
+
+## MCP Protocol Access
+
+MCPHub also exposes a native MCP server for MCP-compatible agents.
+SSE endpoint: http://localhost:3001/sse
+Messages endpoint: http://localhost:3001/messages?sessionId=SESSION_ID
+
+Available MCP tools:
+- search_tools     — Search marketplace by keyword
+- get_tool_details — Get full schema for a specific tool
+- call_tool        — Execute a tool with parameters
+- list_categories  — List all categories with tool counts
+- check_balance    — Check API key balance and usage
+
+---
+
+## Platform Info
+
+Version: 1.0
+Total tools: 8
+Developer docs: https://mcphub.com/docs
+Status page: https://mcphub.com/status
+Support: support@mcphub.com
