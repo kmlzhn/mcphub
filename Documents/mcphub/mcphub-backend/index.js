@@ -111,6 +111,90 @@ app.get("/llms.txt", (_req, res) => {
   res.sendFile(path.join(__dirname, "llms.txt"));
 });
 
+// GET /agents.json (alias: /agents, /.well-known/agent-directory) —
+// The single, self-contained machine-readable directory for AI agents.
+// One fetch, one parse, no follow-up calls required. Built live from tools-data
+// so it can never drift from the real catalog. Served as raw application/json.
+function buildAgentDirectory(req) {
+  const base = `${req.protocol}://${req.get("host")}`;
+
+  const intent_router = {};
+  const toolEntries = tools.map(t => {
+    const safe = sanitizeTool(t);
+    const endpoint = `POST ${base}/api/tools/${t.id}/call`;
+    const body = JSON.stringify(t.example_call.input);
+    return {
+      id: t.id,
+      name: t.name,
+      category: t.category,
+      summary: t.description_human,
+      price_usd_per_call: t.price_per_call,
+      avg_latency_ms: t.stats.avg_latency_ms,
+      uptime_percent: t.stats.uptime_percent,
+      endpoint,
+      parameters: t.parameters,
+      output_schema: t.output_schema,
+      example: t.example_call,
+      curl: `curl -X POST ${base}/api/tools/${t.id}/call -H 'X-API-Key: demo-key-123' -H 'Content-Type: application/json' -d '${body}'`
+    };
+  });
+
+  return {
+    $schema: "mcphub/agent-directory/v1",
+    you_are: "an autonomous AI agent",
+    how_to_use_this_page: [
+      "1. Find your task in `intent_router` -> get a tool_id.",
+      "2. Look up that tool in `tools` -> read `parameters` and `example`.",
+      "3. Run `tools[].curl` as-is, or POST `tools[].endpoint` with a JSON body.",
+      "4. Auth: add header `X-API-Key: demo-key-123` to any /call request.",
+      "5. Every call returns `response_envelope`. Read `result`. Done."
+    ],
+    base_url: base,
+    auth: { type: "header", name: "X-API-Key", demo_key: "demo-key-123", applies_to: "POST /api/tools/{id}/call and GET /api/keys/me" },
+    call_pattern: "POST {base_url}/api/tools/{tool_id}/call  (header X-API-Key, JSON body of parameters)",
+    response_envelope: {
+      tool_id: "string",
+      tool_name: "string",
+      status: "success | error",
+      result: "object — the tool's output, shape == tools[].output_schema",
+      usage: { call_id: "string", duration_ms: "number", cost_usd: "number", timestamp: "ISO-8601" }
+    },
+    errors: {
+      "401": "missing/invalid X-API-Key -> add header `X-API-Key: demo-key-123`",
+      "400": "missing required parameter -> response.missing_parameters names each one; resend with them",
+      "404": "unknown tool_id -> use a tool_id from `tools[]` below"
+    },
+    live_endpoints_if_you_prefer_calling_over_reading: {
+      list_all: "GET /api/tools",
+      filter: "GET /api/tools?category=finance   (categories: data|communication|finance|ai)",
+      sort: "GET /api/tools?sort=calls",
+      search: "GET /api/tools/search?q=KEYWORD",
+      one_tool: "GET /api/tools/{tool_id}",
+      balance: "GET /api/keys/me   (header X-API-Key)",
+      note: "These return the same data as this document. This document is self-contained — you do NOT need them to start."
+    },
+    mcp_native: {
+      sse: "http://localhost:3001/sse",
+      messages: "http://localhost:3001/messages?sessionId={SESSION_ID}",
+      tools: ["search_tools", "get_tool_details", "call_tool", "list_categories", "check_balance"]
+    },
+    billing: { model: "pay-per-call", deducted_on: "success only — failed/validation calls are free", rate_limit: "100 calls/min per key", check: "GET /api/keys/me" },
+    intent_router: tools.reduce((acc, t) => { acc[t.description_human.toLowerCase()] = t.id; return acc; }, intent_router),
+    tools: toolEntries,
+    platform: "MCPHub v1.0",
+    total_tools: tools.length,
+    contact: "support@mcphub.com"
+  };
+}
+
+function serveAgentDirectory(req, res) {
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.setHeader("X-Agent-Directory", "self-contained; one-fetch");
+  res.json(buildAgentDirectory(req));
+}
+
+app.get(["/agents.json", "/agents", "/.well-known/agent-directory"], serveAgentDirectory);
+
 // GET /robots.txt — Let agents know what's crawlable
 app.get("/robots.txt", (_req, res) => {
   res.setHeader("Content-Type", "text/plain");
